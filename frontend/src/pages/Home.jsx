@@ -15,7 +15,7 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);
 
-  const [searchText, setsearchText] = useState("");
+  const [searchText, setSearchText] = useState("");
   return (
     <section
       className="max-w-7xl mx-auto
