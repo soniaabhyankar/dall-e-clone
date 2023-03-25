@@ -25,6 +25,18 @@ const App = () => {
           <Route path="/createPost" element={<CreatePost />} />
         </Routes>
       </main>
+
+      <footer className="text-sm m-5 p-2.5 text-[#6b6b6b] text-center font-inter">
+        &copy;{" "}
+        <a
+          href="https://github.com/soniaabhyankar"
+          target="_blank"
+          className="hover:underline"
+        >
+          Sonia Abhyankar
+        </a>{" "}
+        {new Date().getFullYear()}
+      </footer>
     </BrowserRouter>
   );
 };
