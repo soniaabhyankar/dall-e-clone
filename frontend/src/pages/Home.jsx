@@ -16,6 +16,8 @@ const Home = () => {
   const [posts, setPosts] = useState([]);
 
   const [searchText, setSearchText] = useState("");
+  const [searchedResults, setSearchedResults] = useState(null);
+  const [searchTimeout, setSearchTimeout] = useState(null);
 
   // EFFECTS
   useEffect(() => {
@@ -45,6 +47,25 @@ const Home = () => {
     fetchPosts();
   }, []);
 
+  // CALLBACKS
+  const handleSearchChange = (e) => {
+    clearTimeout(searchTimeout);
+
+    setSearchText(e.target.value);
+
+    setSearchTimeout(
+      setTimeout(() => {
+        const searchResults = posts.filter(
+          (post) =>
+            post.name.toLowerCase().includes(searchText.toLowerCase()) ||
+            post.prompt.toLowerCase().includes(searchText.toLowerCase())
+        );
+
+        setSearchedResults(searchResults);
+      }, 500)
+    );
+  };
+
   return (
     <section
       className="max-w-7xl mx-auto
@@ -61,7 +82,13 @@ const Home = () => {
       </div>
 
       <div className="mt-16">
-        <FormField />
+        <FormField
+          type="text"
+          name="text"
+          placeholder="Search posts"
+          value={searchText}
+          handleChange={handleSearchChange}
+        />
       </div>
 
       <div className="mt-10">
@@ -78,7 +105,7 @@ const Home = () => {
 					 "
               >
                 Showing results for
-                <span className="text-[#222328]">{` ${searchText}.`}</span>
+                <span className="text-[#222328]">{` ${searchText}`}</span>
               </h2>
             )}
 
@@ -87,7 +114,10 @@ const Home = () => {
 						 sm:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-3"
             >
               {searchText ? (
-                <RenderCards data={[]} title="No search results found." />
+                <RenderCards
+                  data={searchedResults}
+                  title="No search results found."
+                />
               ) : (
                 <RenderCards data={posts} title="No posts found." />
               )}
